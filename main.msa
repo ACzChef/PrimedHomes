@@ -7,3 +7,5 @@
         console(@ex)
     )
 <<<
+
+*:/hdebug = msg(get_values('aczchef.primedhomes'))
