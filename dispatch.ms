@@ -18,6 +18,9 @@ proc(_home_dispatch, @args,
 
 	switch(@first,
 		array('set', 'create'),
+			if(!_perm('home.create', player())) {
+				die(_format('You don\'t have permissions to /home set', error))
+			}
 			if(array_index_exists(@args, 0)) {
 				@home = @args[0]
 			} else {
@@ -41,18 +44,43 @@ proc(_home_dispatch, @args,
 			,
 		array('list'),
 			@homes = _get_homes()
-			if(!array_size(@homes)) {
+			@info = ('aczchef.primedhomes.' .player(). '.info')
+			if((array_size(@homes) == 1 && (array_index_exists(@homes, @info) && array_size(@homes[@info]['access']) == 0)) || array_size(@homes) == 0) {
 				die(_format('You don\'t have any homes.', notification))
 			}
-			msg(_format('Here is a list of your homes.', notification))
-			@id = 1
-			foreach(@homes, @home,
-				msg(color('Blue'). '[' .color('Yellow'). @id .color('Blue'). ']' color('Yellow'). '»' color('White'). @home['name'])
-				@id++
-			)
+			@access = false
+			if(array_index_exists(@homes, @info)) {
+				@access = @homes[@info]['access']
+				array_remove(@homes, @info)
+			}
+
+			if(array_size(@homes) != 0) {
+				msg(_format('Here is a list of your homes.', notification))
+				@id = 1
+				foreach(@homes, @home,
+					msg(color('Blue'). '[' .color('Yellow'). @id .color('Blue'). ']' color('Yellow'). '»' if(!array_size(@home['sharedto'])) {color('White')} else {color('Red')}. @home['name'])
+					@id++
+				)
+				if(@access) {
+					msg(color('Blue'). '---------------------------------------------')
+					@id = 1
+					foreach(@access, @key, @player,
+						foreach(@player, @home, 
+							msg(color('Blue'). '[' .color('Yellow'). @id .color('Blue'). ']' color('Yellow'). '»' color('Blue'). @home '-' @key)
+						@id++
+						)
+					)
+				}
+			} else {
+				msg(_format('Here is a list of other peoples homes that you have access to.', notification))
+				@id = 1
+				foreach(@access, @key, @home,
+					msg(color('Blue'). '[' .color('Yellow'). @id .color('Blue'). ']' color('Yellow'). '»' color('Blue'). @home[@id - 1] '-' @key)
+					@id++
+				)
+			}
 			,
 		array('info'),
-			msg(info)
 			if(array_index_exists(@args, 0)) {
 				@home = @args[0]
 			} else {
@@ -61,7 +89,11 @@ proc(_home_dispatch, @args,
 			if(@home == '' || is_null(@home)) {
 				die(_format('You must specify a home name.', 'error'))
 			}
-			@home = _get_home(@home)
+			if(!_home_exists(@home, player())) {
+				die(_format('You don\'t have a home by that name:' '"'.@home.'"', error))
+			} else {
+				@home = _get_home(@home, player())
+			}
 			msg(_format('Here is some info on:' @home['name'], notification))
 			msg(color('Blue'). '[' .color('Yellow'). 'Name' .color('Blue'). ']' color('Yellow'). '»' color('White'). @home['name'])
 			msg(color('Blue'). '[' .color('Yellow'). 'Location' .color('Blue'). ']' color('Yellow'). '»' color('White'). 
@@ -78,7 +110,6 @@ proc(_home_dispatch, @args,
 			}
 			,
 		array('allow'),
-			msg(allow)
 			if(array_index_exists(@args, 0)) {
 				@home = @args[0]
 			} else {
@@ -88,17 +119,13 @@ proc(_home_dispatch, @args,
 				die(_format('You must specify a home name.', 'error'))
 			}
 			if(array_index_exists(@args, 1)) {
-				try(@player = @args[1], die(_format('Player:' @args[1] 'Is not online.', error)))
+				try(@player = player(@args[1]), die(_format('Player:' @args[1] 'Is not online.', error)))
 			} else {
-				die(_format('You must specify a player.', 'error'))
-			}
-			if(@player == '' || is_null(@player)) {
 				die(_format('You must specify a player.', 'error'))
 			}
 			_home_share(@home, @player, true, player())
 			,
 		array('deny'),
-			msg(deny)
 			if(array_index_exists(@args, 0)) {
 				@home = @args[0]
 			} else {
@@ -108,11 +135,8 @@ proc(_home_dispatch, @args,
 				die(_format('You must specify a home name.', 'error'))
 			}
 			if(array_index_exists(@args, 1)) {
-				try(@player = @args[1], die(_format('Player:' @args[1] 'Is not online.', error)))
+				try(@player = player(@args[1]), die(_format('Player:' @args[1] 'Is not online.', error)))
 			} else {
-				die(_format('You must specify a player.', 'error'))
-			}
-			if(@player == '' || is_null(@player)) {
 				die(_format('You must specify a player.', 'error'))
 			}
 			_home_share(@home, @player, false, player())

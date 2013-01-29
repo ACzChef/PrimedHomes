@@ -8,4 +8,4 @@
     )
 <<<
 
-*:/hdebug = msg(get_values('aczchef.primedhomes'))
+*:/sethome [$] = call_alias(/home set [$])
