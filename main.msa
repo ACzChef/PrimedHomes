@@ -8,4 +8,4 @@
     )
 <<<
 
-*:/sethome [$] = call_alias(/home set [$])
+*:/sethome [$] = call_alias('/home set' $)
