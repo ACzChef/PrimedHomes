@@ -1,5 +1,5 @@
 *:/home [$] = >>>
-	include('dispatch.ms')
+    include('dispatch.ms')
     try(
         _home_dispatch($),
     @ex,
