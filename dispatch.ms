@@ -4,16 +4,16 @@ proc(_home_dispatch, @args,
     if(array_size(@args)) {
         @first = array_remove(@args, 0)
     } else {
-        msg(color('Yellow'). '----' color('White'). 'PrimedHomes Help - (<> = Required | [] = Optional)' color('Yellow'). '----')
-        msg(color('Green'). '/home help [Command] '.color('White'). 'Displays this message or more specific info for a command.')
-        msg(color('Green'). '/home set <Home> ' .color('White'). '- Set\'s a home to teleport to with /home.')
-        msg(color('Green'). '/home delete <Home> ' .color('White'). '- Delete\'s a home previously made with /home set.')
-        msg(color('Green'). '/home <Home> [Player] ' .color('White'). '- Teleport\'s you to a home previously made with /home set.')
-        msg(color('Green'). '/home list ' .color('White'). '- List\'s all your homes.')
-        msg(color('Green'). '/home info <Home> ' .color('White'). '- Get\'s extra info on a specific home such as location, etc.')
-        msg(color('Green'). '/home allow <Home> <Player> ' .color('White'). '- Allows another player to teleport to a home.')
-        msg(color('Green'). '/home deny <Home> <Player> ' .color('White'). '- Denies another player to teleport to a home.')
-        die(color('Yellow')'---------------------------------------------------')
+        msg(color('Blue'). ' ----' color('Yellow'). 'PrimedHomes Help - (<> = Required | [] = Optional)' color('Blue'). '----')
+        msg(color('Blue'). ' /home help [Command] '.color('Yellow'). 'Displays this message or more specific info for a command.')
+        msg(color('Blue'). ' /home set <Home> ' .color('Yellow'). '- Set\'s a home to teleport to with /home.')
+        msg(color('Blue'). ' /home delete <Home> ' .color('Yellow'). '- Delete\'s a home previously made with /home set.')
+        msg(color('Blue'). ' /home <Home> [Player] ' .color('Yellow'). '- Teleport\'s you to a home previously made with /home set.')
+        msg(color('Blue'). ' /home list ' .color('Yellow'). '- List\'s all your homes.')
+        msg(color('Blue'). ' /home info <Home> ' .color('Yellow'). '- Get\'s extra info on a specific home such as location, etc.')
+        msg(color('Blue'). ' /home allow <Home> <Player> ' .color('Yellow'). '- Allows another player to teleport to a home.')
+        msg(color('Blue'). ' /home deny <Home> <Player> ' .color('Yellow'). '- Denies another player to teleport to a home.')
+        die(color('Blue'). ' ---------------------------------------------------')
     }
 
     switch(@first,
